@@ -6,10 +6,56 @@
 :- use_module(library(random)).
 
 shuffle:-
-		H1 = [[2,diamonds], [4,hearts],[7, clubs],[7,diamonds],[9,hearts]], 
-		H2 = [[3,diamonds],[4,hearts],[5,clubs],[2,hearts],[8,clubs]], 
-		print(H1), print(H2),
+		%%%%%% player 1 %%%%%%
+		
+		random_member(U1, [2,3,4,5,6,7,8,9,10,jack,queen,king,ace]),
+		random_member(Y1,[hearts,clubs,spades,diamonds]),
+		append([U1],[Y1],Card11),
+		
+		random_member(U2, [2,3,4,5,6,7,8,9,10,jack,queen,king,ace]),
+		random_member(Y2,[hearts,clubs,spades,diamonds]),
+		append([U2],[Y2],Card12),
+		
+		random_member(U3, [2,3,4,5,6,7,8,9,10,jack,queen,king,ace]),
+		random_member(Y3,[hearts,clubs,spades,diamonds]),
+		append([U3],[Y3],Card13),
+		
+		random_member(U4, [2,3,4,5,6,7,8,9,10,jack,queen,king,ace]),
+		random_member(Y4,[hearts,clubs,spades,diamonds]),
+		append([U4],[Y4],Card14),
+		
+		random_member(U5, [2,3,4,5,6,7,8,9,10,jack,queen,king,ace]),
+		random_member(Y5,[hearts,clubs,spades,diamonds]),
+		append([U5],[Y5],Card15),
+		
+		%%%%%% player 2%%%%%%
+		
+		random_member(U6, [2,3,4,5,6,7,8,9,10,jack,queen,king,ace]),
+		random_member(Y6,[hearts,clubs,spades,diamonds]),
+		append([U6],[Y6],Card21),
+
+		random_member(U7, [2,3,4,5,6,7,8,9,10,jack,queen,king,ace]),
+		random_member(Y7,[hearts,clubs,spades,diamonds]),
+		append([U7],[Y7],Card22),
+		
+		random_member(U8, [2,3,4,5,6,7,8,9,10,jack,queen,king,ace]),
+		random_member(Y8,[hearts,clubs,spades,diamonds]),
+		append([U8],[Y8],Card23),
+		
+		random_member(U9, [2,3,4,5,6,7,8,9,10,jack,queen,king,ace]),
+		random_member(Y9,[hearts,clubs,spades,diamonds]),
+		append([U9],[Y9],Card24),
+		
+		random_member(U10, [2,3,4,5,6,7,8,9,10,jack,queen,king,ace]),
+		random_member(Y10,[hearts,clubs,spades,diamonds]),
+		append([U10],[Y10],Card25),
+		
+		H1 = [Card11, Card12,Card13,Card14,Card15], 
+		H2 = [Card21,Card22,Card23,Card24,Card25],
+		%H1 = [[2,diamonds], [4,hearts],[7, clubs],[7,diamonds],[9,hearts]], 
+		%H2 = [[3,diamonds],[4,hearts],[5,clubs],[2,hearts],[8,clubs]], 
 		winner(H1,H2, Winner),!,
+		print(H1),format('~n'),nl,print(H2),
 		print('win='), print(Winner).
 
 play([],0).
@@ -18,16 +64,71 @@ play([[Hand1,Hand2]|Rst], Num_Wins) :-
   (Winner = Hand1, play(Rst,Remaining), Num_Wins is 1 + Remaining ;
    play(Rst, Num_Wins)).
 
+   
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Cumulative probabilities
+
+cumulative_prob(royal_flush, 0.00056).   	% 1/ 11*10*4*4   
+cumulative_prob(straigh_flush, 0.00056). 	% 1/ 4*4*11*10
+cumulative_prob(flush, 0.0625). 			% 1/4*4
+cumulative_prob(straight, 0.0068). 			% 4/49 * 4/48
+cumulative_prob(four_of_a_kind, 0.0041).	% 1/14 * 1/4 * 13/14 * 1/4
+cumulative_prob(three_of_a_kind, 0.0538).	% 13/14 * 1/4 * 13/14 * 1/4
+cumulative_prob(two_pair, 0.056).			% 3/49 * 44/49.
+cumulative_prob(high_card, 0.919).			% 47/49 * 46/48.
+cumulative_prob(pair, 0.056).			% 47/49 * 46/48.
+   
+ 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%  Guess Rank.
+%%  find Rank.
 
-probable_winner(N,[C11,C12,C13|T1]):-
-	Score is 0,
+find_rank([C11,C12,C13|T1], R1):-
 	guess_hand([C11,C12,C13], Z1),
-	guess_rank(Z1,R1),
-	(R1 < N -> format('Probably W2 ~n'); format('I will win ~n')).
+	format('On table: ~n'),
+	print(C11),
+	print(C12),
+	print(C13),nl,
+	format('Might be: ~n'),
+	print(Z1),nl,
+	cumulative_prob(Z1,P),
+	format('Cumulative prob of occurance is :'),
+	print(P),
+	guess_rank(Z1,R1).
 	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  Compare Rank.
+	
+compare_rank(N,R1):-
+	(R1 = N ->
+		format('Equiprobable ranks. Can take a chance with 3 coins ~n'));
 
+	% hisrank < myRank	
+	(R1 < N -> 
+		
+		format('Probably W2 will win. Do not play ~n'),
+		(R1 > 5 -> 
+			print('Can take a chance with more 3 coins'); 
+			print('Quit or can bet less than 3 coins')));
+	
+	% hisrank > myRank
+	(R1 > N ->
+		format('W1 will win. Take a chance ~n'),
+		(R1 > 5 -> 
+			print('can bet more than 6 coins'); 
+			print('but less than 6 coins'))).
+		
+
+%%%%%%%%%%%%%%%%%%%
+% Guess ranks
+guess_rank(royal_flush,1).
+guess_rank(straigh_flush,2).
+guess_rank(flush,3).
+guess_rank(straight,4).
+guess_rank(three_of_a_kind,5).
+guess_rank(pair,6).
+guess_rank(high_card,7).
+	
+	
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%  Guess Hand determination
 %% royal_flush= 1;straigh_flush = 2; flush = 3;
@@ -61,15 +162,6 @@ guess_hand([[A,_],[B,_],[C,_]], pair) :-
 
 guess_hand(_,high_card).  
   
-%%%%%%%%%%%%%%%%%%%
-
-guess_rank(royal_flush,1).
-guess_rank(straigh_flush,2).
-guess_rank(flush,3).
-guess_rank(straight,4).
-guess_rank(three_of_a_kind,5).
-guess_rank(pair,6).
-guess_rank(high_card,7).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -77,9 +169,26 @@ guess_rank(high_card,7).
 winner(H1, H2, Winner) :-
   sort_hand(H1, Sorted_Hand1),
   sort_hand(H2, Sorted_Hand2),
+  
+ 
+  find_rank(Sorted_Hand1,Myrank),
+  format('~n'),
+  format('My Rank: '),
+  print(Myrank),nl,
+  format('~n'),
+  
+  find_rank(Sorted_Hand2,Hisrank),
+  format('~n'),
+  format('Hisrank Rank: '),
+  print(Hisrank),nl,
+  format('~n'),
+  
+  compare_rank(Myrank,Hisrank),
+  format('~n'),
+  format('Actual Reveal: '),
+  format('~n'),
+
   determine_hand(Sorted_Hand1,  X1),
-  guess_rank(X1,Myrank),
-  probable_winner(Myrank,H2),
   determine_hand(Sorted_Hand1,  X1),
   determine_hand(Sorted_Hand2,  X2),
   beats(X1, X2, Verdict),
@@ -118,8 +227,6 @@ tiebreak(high_card, H1, H2, X) :-
   reverse(H1, RevH1),
   reverse(H2, RevH2),
   highest_card_chain(RevH1, RevH2, X).
-
-
 
 
 beats_with_hand(H1, C1, H2, C2, X) :-
