@@ -1,0 +1,213 @@
+;; Dribble of #<IO TERMINAL-STREAM> started on 2018-09-24 01:40:04.
+#<OUTPUT BUFFERED FILE-STREAM CHARACTER #P"part2log1.txt">
+[2]> (load "aima")
+;; Loading file C:\aima\aima.lisp ...
+;;  Loading file C:\aima\utilities\utilities.lisp ...
+;;  Loaded file C:\aima\utilities\utilities.lisp
+;;  Loading file C:\aima\utilities\binary-tree.lisp ...
+;;  Loaded file C:\aima\utilities\binary-tree.lisp
+;;  Loading file C:\aima\utilities\queue.lisp ...
+;;  Loaded file C:\aima\utilities\queue.lisp
+;;  Loading file C:\aima\utilities\cltl2.lisp ...
+;;  Loaded file C:\aima\utilities\cltl2.lisp
+;;  Loading file C:\aima\utilities\test-utilities.lisp ...
+;;  Loaded file C:\aima\utilities\test-utilities.lisp
+;; Loaded file C:\aima\aima.lisp
+T
+[3]> (aima-load 'search)
+;; Loading file C:\aima\agents\test-agents.lisp ...
+;; Loaded file C:\aima\agents\test-agents.lisp
+;; Loading file C:\aima\agents\environments\basic-env.lisp ...
+;; Loaded file C:\aima\agents\environments\basic-env.lisp
+;; Loading file C:\aima\agents\environments\grid-env.lisp ...
+;; Loaded file C:\aima\agents\environments\grid-env.lisp
+;; Loading file C:\aima\agents\environments\vacuum.lisp ...
+;; Loaded file C:\aima\agents\environments\vacuum.lisp
+;; Loading file C:\aima\agents\environments\wumpus.lisp ...
+** - Continuable Error
+DEFUN/DEFMACRO(KILL): #<PACKAGE POSIX> is locked
+If you continue (by typing 'continue'): Ignore the lock and proceed
+The following restarts are also available:
+SKIP           :R1      skip (DEFUN KILL # ...)
+RETRY          :R2      retry (DEFUN KILL # ...)
+STOP           :R3      stop loading file C:\aima\agents\environments\wumpus.lisp
+ABORT          :R4      Abort main loop
+Break 1 [4]> continue
+;; Loaded file C:\aima\agents\environments\wumpus.lisp
+;; Loading file C:\aima\agents\agents\agent.lisp ...
+;; Loaded file C:\aima\agents\agents\agent.lisp
+;; Loading file C:\aima\agents\agents\vacuum.lisp ...
+;; Loaded file C:\aima\agents\agents\vacuum.lisp
+;; Loading file C:\aima\agents\agents\wumpus.lisp ...
+;; Loaded file C:\aima\agents\agents\wumpus.lisp
+;; Loading file C:\aima\agents\algorithms\grid.lisp ...
+;; Loaded file C:\aima\agents\algorithms\grid.lisp
+;; Loading file C:\aima\search\test-search.lisp ...
+;; Loaded file C:\aima\search\test-search.lisp
+;; Loading file C:\aima\search\algorithms\problems.lisp ...
+;; Loaded file C:\aima\search\algorithms\problems.lisp
+;; Loading file C:\aima\search\algorithms\simple.lisp ...
+;; Loaded file C:\aima\search\algorithms\simple.lisp
+;; Loading file C:\aima\search\algorithms\repeated.lisp ...
+;; Loaded file C:\aima\search\algorithms\repeated.lisp
+;; Loading file C:\aima\search\algorithms\csp.lisp ...
+;; Loaded file C:\aima\search\algorithms\csp.lisp
+;; Loading file C:\aima\search\algorithms\ida.lisp ...
+;; Loaded file C:\aima\search\algorithms\ida.lisp
+;; Loading file C:\aima\search\algorithms\iterative.lisp ...
+;; Loaded file C:\aima\search\algorithms\iterative.lisp
+;; Loading file C:\aima\search\algorithms\sma.lisp ...
+;; Loaded file C:\aima\search\algorithms\sma.lisp
+;; Loading file C:\aima\search\algorithms\minimax.lisp ...
+;; Loaded file C:\aima\search\algorithms\minimax.lisp
+;; Loading file C:\aima\search\environments\games.lisp ...
+;; Loaded file C:\aima\search\environments\games.lisp
+;; Loading file C:\aima\search\environments\prob-solve.lisp ...
+;; Loaded file C:\aima\search\environments\prob-solve.lisp
+;; Loading file C:\aima\search\domains\cannibals.lisp ...
+;; Loaded file C:\aima\search\domains\cannibals.lisp
+;; Loading file C:\aima\search\domains\ttt.lisp ...
+;; Loaded file C:\aima\search\domains\ttt.lisp
+;; Loading file C:\aima\search\domains\cognac.lisp ...
+;; Loaded file C:\aima\search\domains\cognac.lisp
+;; Loading file C:\aima\search\domains\nqueens.lisp ...
+;; Loaded file C:\aima\search\domains\nqueens.lisp
+;; Loading file C:\aima\search\domains\path-planning.lisp ...
+;; Loaded file C:\aima\search\domains\path-planning.lisp
+;; Loading file C:\aima\search\domains\puzzle8.lisp ...
+;; Loaded file C:\aima\search\domains\puzzle8.lisp
+;; Loading file C:\aima\search\domains\route-finding.lisp ...
+;; Loaded file C:\aima\search\domains\route-finding.lisp
+;; Loading file C:\aima\search\domains\tsp.lisp ...
+;; Loaded file C:\aima\search\domains\tsp.lisp
+;; Loading file C:\aima\search\domains\vacuum.lisp ...
+;; Loaded file C:\aima\search\domains\vacuum.lisp
+;; Loading file C:\aima\search\agents\ps-agents.lisp ...
+;; Loaded file C:\aima\search\agents\ps-agents.lisp
+;; Loading file C:\aima\search\agents\ttt-agent.lisp ...
+;; Loaded file C:\aima\search\agents\ttt-agent.lisp
+T
+[5]> (load "simple")
+;; Loading file C:\aima\simple.lisp ...
+;; Loaded file C:\aima\simple.lisp
+T
+[6]> (load "cannibals")
+;; Loading file C:\aima\cannibals.lisp ...
+;; Loaded file C:\aima\cannibals.lisp
+T
+[7]> (load "CannibalProblemCode")
+;; Loading file C:\aima\CannibalProblemCode.lsp ...
+Action               State
+======               =====
+                     (3 3 1 0 0 0)
+(1 1 1)              (2 2 0 1 1 1)
+(-1 0 -1)            (3 2 1 0 1 0)
+(0 2 1)              (3 0 0 0 3 1)
+(0 -1 -1)            (3 1 1 0 2 0)
+(2 0 1)              (1 1 0 2 2 1)
+(-1 -1 -1)           (2 2 1 1 1 0)
+(2 0 1)              (0 2 0 3 1 1)
+(0 -1 -1)            (0 3 1 3 0 0)
+(0 2 1)              (0 1 0 3 2 1)
+(0 -1 -1)            (0 2 1 3 1 0)
+(0 2 1)              (0 0 0 3 3 1)
+======               =====
+Total of 14 nodes expanded.
+Action               State
+======               =====
+                     (3 3 1 0 0 0)
+(0 2 1)              (3 1 0 0 2 1)
+(0 -1 -1)            (3 2 1 0 1 0)
+(0 2 1)              (3 0 0 0 3 1)
+(0 -1 -1)            (3 1 1 0 2 0)
+(2 0 1)              (1 1 0 2 2 1)
+(-1 -1 -1)           (2 2 1 1 1 0)
+(2 0 1)              (0 2 0 3 1 1)
+(0 -1 -1)            (0 3 1 3 0 0)
+(0 2 1)              (0 1 0 3 2 1)
+(-1 0 -1)            (1 1 1 2 2 0)
+(1 1 1)              (0 0 0 3 3 1)
+======               =====
+Total of 11877 nodes expanded.
+Action               State
+======               =====
+                     (3 3 1 0 0 0)
+(0 2 1)              (3 1 0 0 2 1)
+(0 -1 -1)            (3 2 1 0 1 0)
+(0 2 1)              (3 0 0 0 3 1)
+(0 -1 -1)            (3 1 1 0 2 0)
+(2 0 1)              (1 1 0 2 2 1)
+(-1 -1 -1)           (2 2 1 1 1 0)
+(2 0 1)              (0 2 0 3 1 1)
+(0 -1 -1)            (0 3 1 3 0 0)
+(0 2 1)              (0 1 0 3 2 1)
+(0 -1 -1)            (0 2 1 3 1 0)
+(0 2 1)              (0 0 0 3 3 1)
+======               =====
+Total of 9329 nodes expanded.
+Action               State
+======               =====
+                     (3 3 1 0 0 0)
+(0 2 1)              (3 1 0 0 2 1)
+(0 -1 -1)            (3 2 1 0 1 0)
+(0 2 1)              (3 0 0 0 3 1)
+(0 -1 -1)            (3 1 1 0 2 0)
+(2 0 1)              (1 1 0 2 2 1)
+(-1 -1 -1)           (2 2 1 1 1 0)
+(2 0 1)              (0 2 0 3 1 1)
+(0 -1 -1)            (0 3 1 3 0 0)
+(0 2 1)              (0 1 0 3 2 1)
+(-1 0 -1)            (1 1 1 2 2 0)
+(1 1 1)              (0 0 0 3 3 1)
+======               =====
+Total of 55 nodes expanded.
+Action               State
+======               =====
+                     (3 3 1 0 0 0)
+(1 1 1)              (2 2 0 1 1 1)
+(-1 0 -1)            (3 2 1 0 1 0)
+(0 2 1)              (3 0 0 0 3 1)
+(0 -1 -1)            (3 1 1 0 2 0)
+(2 0 1)              (1 1 0 2 2 1)
+(-1 -1 -1)           (2 2 1 1 1 0)
+(2 0 1)              (0 2 0 3 1 1)
+(0 -1 -1)            (0 3 1 3 0 0)
+(0 2 1)              (0 1 0 3 2 1)
+(0 -1 -1)            (0 2 1 3 1 0)
+(0 2 1)              (0 0 0 3 3 1)
+======               =====
+Total of 14 nodes expanded.
+Action               State
+======               =====
+                     (3 3 1 0 0 0)
+(0 2 1)              (3 1 0 0 2 1)
+(0 -1 -1)            (3 2 1 0 1 0)
+(0 2 1)              (3 0 0 0 3 1)
+(0 -1 -1)            (3 1 1 0 2 0)
+(2 0 1)              (1 1 0 2 2 1)
+(-1 -1 -1)           (2 2 1 1 1 0)
+(2 0 1)              (0 2 0 3 1 1)
+(0 -1 -1)            (0 3 1 3 0 0)
+(0 2 1)              (0 1 0 3 2 1)
+(-1 0 -1)            (1 1 1 2 2 0)
+(1 1 1)              (0 0 0 3 3 1)
+======               =====
+Total of 13 nodes expanded.
+Solved  Cost  Length  Nodes  Algorithm
+====== ====== ====== ======= =========
+   10    11.0   11.0 11877.0 BREADTH-FIRST-SEARCH
+   10    11.0   11.0  9329.0 UNIFORM-COST-SEARCH
+   10    11.0   11.0    55.0 NO-RETURNS-BREADTH-FIRST-SEARCH
+   10    11.0   11.0    14.0 NO-DUPLICATES-BREADTH-FIRST-SEARCH
+   10    11.0   11.0    13.0 NO-CYCLES-DEPTH-FIRST-SEARCH
+Solved  Cost  Length  Nodes  Algorithm
+====== ====== ====== ======= =========
+    1    11.0   11.0 11877.0 BREADTH-FIRST-SEARCH
+    1    11.0   11.0  9329.0 UNIFORM-COST-SEARCH
+    1    11.0   11.0    55.0 NO-RETURNS-BREADTH-FIRST-SEARCH
+    1    11.0   11.0    14.0 NO-DUPLICATES-BREADTH-FIRST-SEARCH
+    1    11.0   11.0    13.0 NO-CYCLES-DEPTH-FIRST-SEARCH
+;; Loaded file C:\aima\CannibalProblemCode.lsp
+T
+[8]> (dribble)
+;; Dribble of #<IO TERMINAL-STREAM> finished on 2018-09-24 01:43:21.

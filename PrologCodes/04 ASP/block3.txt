@@ -1,0 +1,367 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	5 blocks color program.
+%	Written:-
+%		Aadish S. Joshi.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% \begin{verbatim}
+
+const length=11.
+
+time(1..length).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% block generation.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+block(a).
+block(b).
+block(c).
+block(d).
+block(e).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Color constraints
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%color(red).
+%color(green).
+%color(yellow).
+
+color(a,red).
+color(b,yellow).
+color(c,green).
+color(d,yellow).
+color(e,green).
+
+same_color(X,Y):-
+	color(X,Z1),
+	color(Y,Z2),
+	Z1 = Z2.
+
+%color(X,red):-
+%	block(X),
+%	not color(X,yellow),
+%	not color(X,green).
+
+%color(X,green):-
+%	block(X),
+%	not color(X,yellow),
+%	not color(X,red).	
+	
+%color(X,yellow):-
+%	block(X),
+%	not color(X,red),
+%	not color(X,green).
+	
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Shape constraint.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+shape(square).
+shape(triangle).
+
+shape(a,triangle).
+shape(b,square).
+shape(c,square).
+shape(d,triangle).
+shape(e,square).
+
+shape(X,square):-
+	block(X),
+	not shape(X,triangle).
+
+shape(X,triangle):-
+	block(X),
+	not shape(X,square).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Initial conditions.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+initially(handempty).
+initially(clear(a)).
+initially(clear(d)).
+initially(clear(e)).
+
+initially(ontable(c)).
+initially(ontable(e)).
+initially(ontable(d)).
+initially(on(b,c)).
+initially(on(a,b)).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% final goal state.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+finally(ontable(b)).
+finally(on(d,b)).
+finally(ontable(e)).
+finally(on(c,e)).
+finally(ontable(a)).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Goal.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+not_goal(T):- time(T),
+    literal(X),
+    finally(X),
+    not holds(X,T).
+
+goal(T) :- time(T),
+    not not_goal(T).
+
+
+exists_plan :- goal(length).
+
+:- not exists_plan.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Fluents.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Defining what are fluents and
+%what are actions.
+
+fluent(on(X,Y)) :-
+    block(X),
+    block(Y).
+
+fluent(ontable(X)) :-
+    block(X).
+
+fluent(clear(X)) :-
+    block(X).
+
+fluent(holding(X)) :-
+    block(X).
+
+fluent(handempty).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Actions.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+action(pick_up(X)) :-
+    block(X).
+
+action(put_down(X)) :-
+    block(X).
+
+action(stack(X,Y)) :-
+    block(X),
+    block(Y).
+
+action(unstack(X,Y)) :-
+    block(X),
+    block(Y).
+
+
+%Effects of actions and executability conditions.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Executable actions.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+executable(pick_up(X), T)   :-
+    block(X),
+    time(T),
+    T < length,
+    holds(clear(X), T),
+    holds(ontable(X), T),
+    holds(handempty, T).
+
+executable(put_down(X), T)  :-
+    block(X),
+        time(T),
+        T < length,
+    holds(holding(X),T).
+
+executable(stack(X,Y),T)    :-
+    block(Y),
+    block(X),
+    shape(Y,square),
+	same_color(X,Y),
+        time(T),
+        T < length,
+    holds(holding(X),T),
+    holds(clear(Y), T).
+
+executable(unstack(X,Y),T)  :-
+    block(Y),
+    block(X),
+        time(T),
+        T < length,
+        holds(clear(X), T),
+        holds(on(X,Y), T),
+        holds(handempty, T).
+
+		
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Causes.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		
+causes(pick_up(X), neg(ontable(X))) :-
+    block(X).
+
+causes(pick_up(X), neg(clear(X)))   :-
+    block(X).
+
+causes(pick_up(X), holding(X))      :-
+    block(X).
+
+causes(pick_up(X), neg(handempty))      :-
+        block(X).
+
+
+
+causes(put_down(X), ontable(X))     :-
+        block(X).
+
+causes(put_down(X), clear(X))           :-
+        block(X).
+
+causes(put_down(X), neg(holding(X)))    :-
+        block(X).
+
+causes(put_down(X), handempty)          :-
+        block(X).
+
+
+
+causes(stack(X,Y), neg(holding(X))) :-
+    block(X),
+    block(Y).
+
+causes(stack(X,Y), neg(clear(Y)))       :-
+        block(X),
+        block(Y).
+
+causes(stack(X,Y), clear(X))            :-
+        block(X),
+        block(Y).
+
+causes(stack(X,Y), handempty)           :-
+        block(X),
+        block(Y).
+
+causes(stack(X,Y), on(X,Y))             :-
+        block(X),
+        block(Y).
+
+
+causes(unstack(X,Y), holding(X))        :-
+        block(X),
+        block(Y).
+
+causes(unstack(X,Y), clear(Y))          :-
+        block(X),
+        block(Y).
+
+causes(unstack(X,Y), neg(clear(X)))     :-
+        block(X),
+        block(Y).
+
+causes(unstack(X,Y), neg(handempty))      :-
+        block(X),
+        block(Y).
+
+causes(unstack(X,Y), neg(on(X,Y)))        :-
+        block(X),
+        block(Y).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+literal(G)  :-
+    fluent(G).
+
+literal(neg(G)) :-
+    fluent(G).
+
+contrary(F, neg(F)) :-
+    fluent(F).
+
+contrary(neg(F), F) :-
+    fluent(F).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+holds(F, 1) :-
+    literal(F),
+    initially(F).
+
+
+holds(F, T+1)   :-
+    literal(F),
+    time(T),
+    T < length,
+    action(A),
+    executable(A,T),
+    occurs(A,T),
+    causes(A,F).
+
+holds(F, T+1)   :-
+        literal(F),
+    literal(G),
+    contrary(F,G),
+        time(T),
+        T < length,
+    holds(F,T),
+    not holds(G, T+1).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+possible(A,T)   :-
+    action(A),
+    time(T),
+    executable(A,T),
+    not goal(T).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+occurs(A,T) :-
+    action(A),
+    time(T),
+    possible(A,T),
+    not not_occurs(A,T).
+
+not_occurs(A,T) :-
+    action(A),
+    action(AA),
+    time(T),
+    occurs(AA,T),
+    neq(A,AA).
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+hide time(T).
+hide action(A).
+hide causes(A,F).
+hide initially(F).
+hide contrary(F,G).
+hide fluent(F).
+hide literal(L).
+hide executable(A,T).
+hide holds(F,T).
+hide not_occurs(A,T).
+hide possible(A,T).
+hide possible1(A,T).
+hide possible2(A,T).
+hide block(X).
+hide exists_plan.
+hide finally(X).
+hide goal(T).
+hide not_goal(T).
+
+% \end{verbatim}

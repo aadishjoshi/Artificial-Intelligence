@@ -1,0 +1,5 @@
+(setq searchers '(csp-backtracking-search csp-forward-checking-search))
+(setq p1 (make-nqueens-problem :n 9))
+	(solve p1 'csp-backtracking-search)
+	(solve p1 'csp-forward-checking-search)
+	(compare-search-algorithms #'(lambda () p1) searchers :n 1)
